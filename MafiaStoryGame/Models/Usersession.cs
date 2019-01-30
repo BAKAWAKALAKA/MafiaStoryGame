@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TelegramAPI
+namespace MafiaStoryGame.Models
 {
-    public class Class1
+    class UserSession
     {
     }
 }
