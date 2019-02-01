@@ -1,4 +1,9 @@
-﻿{"ok":true,"result":[{"update_id":114974116,
+﻿
+{"ok":true,"result":{"id":721230128,"is_bot":true,"first_name":"GoogleForMe","username":"mahjong_counter_bot"}}
+
+
+
+{"ok":true,"result":[{"update_id":114974116,
 "message":{"message_id":7,"from":{"id":367265107,"is_bot":false,"first_name":"Kate","last_name":"Il","language_code":"ru"},"chat":{"id":367265107,"first_name":"Kate","last_name":"Il","type":"private"},"date":1548800941,"text":"\u043f\u0440\u0438\u0432\u0435\u0442"}},
 {"update_id":114974117,
 "message":{"message_id":8,"from":{"id":367265107,"is_bot":false,"first_name":"Kate","last_name":"Il","language_code":"ru"},"chat":{"id":367265107,"first_name":"Kate","last_name":"Il","type":"private"},"date":1548800946,"text":"\u0442\u0435\u0431\u0435 \u043c\u043e\u0439 \u0434\u0440\u0443\u0433"}},

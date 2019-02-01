@@ -56,10 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandHandler.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="Telegram.cs" />
-    <Compile Include="TelegramBot.cs" />
+    <Compile Include="Bot\CommandHandler.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Driver\Telegram.cs" />
+    <Compile Include="Bot\TelegramBot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,8 +71,6 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Driver\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

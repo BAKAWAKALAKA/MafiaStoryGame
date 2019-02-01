@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace MafiaStoryGame.Logic
 {
-    public class Logic
-    {
-
-
-        public void NextState(this GameSesion gs)
-        {
+    //public class Logic
+    //{
+    //    public void NextState(this GameSesion gs)
+    //    {
            
-        }
+    //    }
 
-        public 
-    }
+    //}
 }

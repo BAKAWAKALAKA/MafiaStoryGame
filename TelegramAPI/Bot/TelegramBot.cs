@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TelegramApi;
 
 namespace TelegramAPI
 {
-    public class TelegramBot
+    // todo  добавить таймер na проверку доступности телеги 
+    public abstract class TelegramBot
     {
         private Timer IncomingTimer;
         private Timer OutcomingTimer;
@@ -15,7 +17,7 @@ namespace TelegramAPI
 
         private int MAX_OUTCOMING_MESEGES;
 
-        //   private event Action InComingEvent;
+        //  private event Action InComingEvent;
         //  private event Action OutComingEvent;
 
         private List<CommandHandler> Commands;
@@ -29,6 +31,7 @@ namespace TelegramAPI
 
             OutcomingMessages = new List<Message>();
 
+            // можно было бы вместо этого использовать один метод Update гдебыли бы GetUpdate SendMessages
             IncomingTimer = new Timer((x) => this.GetUpdate());
             IncomingTimer.Change(500, 500);
 
@@ -50,6 +53,7 @@ namespace TelegramAPI
         private void GetUpdate()
         {
             // метод взятия апдейтов из телеги
+            // возможно нужно переделать т к у нас команды завиясят от пользователя и состояни игры
             var requests = new List<Message>();
 
             foreach (var request in requests)

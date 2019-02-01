@@ -72,5 +72,11 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TelegramAPI\TelegramAPI.csproj">
+      <Project>{180e7a68-0147-45de-a771-d46b5fe184c4}</Project>
+      <Name>TelegramAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
