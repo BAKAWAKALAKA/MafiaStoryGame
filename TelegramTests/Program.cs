@@ -12,8 +12,8 @@ namespace TelegramTests
         {
             var proxy = "89.223.80.30";
             var port = 8080;
-            var _base = @"https://api.telegram.org/bot721230128:AAFmb4gQ-b2HXr79nRmeg8aLyhaEvWswhCE/getMe";
-            var _request = @"bot721230128:AAFmb4gQ-b2HXr79nRmeg8aLyhaEvWswhCE/getMe";
+            var _base = @"https://api.telegram.org/bot/getMe";
+            var _request = @"bot/getMe";
             var _baseRequestUrlc = @"https://api.telegram.org/bot{0}/{1}";
             var client = new RestClient(_base);
             client.Proxy = new System.Net.WebProxy(proxy, port);
@@ -21,11 +21,11 @@ namespace TelegramTests
             var responce = client.Execute(request);
 
 
-            client.BaseUrl = new Uri(@"https://api.telegram.org/bot721230128:AAFmb4gQ-b2HXr79nRmeg8aLyhaEvWswhCE/getFile?file_id=AgADAgADlKoxG3XxQEpEH6710q86BxeaOQ8ABFIQ1hgVl4KX6u8DAAEC");
+            client.BaseUrl = new Uri(@"https://api.telegram.org/bot/getFile?file_id=1hgVl4KX6u8DAAEC");
             responce = client.Execute(request);
 
             var ttt = "photos/file_0.jpg";
-            client.BaseUrl = new Uri($@"https://api.telegram.org/file/bot721230128:AAFmb4gQ-b2HXr79nRmeg8aLyhaEvWswhCE/{ttt}");
+            client.BaseUrl = new Uri($@"https://api.telegram.org/file/bot/{ttt}");
             responce = client.Execute(request);
 
 
@@ -34,7 +34,7 @@ namespace TelegramTests
             Bitmap bitmap = (Bitmap)Bitmap.FromStream(mem);
             bitmap.Save("lfew");
 
-            client.BaseUrl = new Uri(@"https://api.telegram.org/bot721230128:AAFmb4gQ-b2HXr79nRmeg8aLyhaEvWswhCE/getUpdates");
+            client.BaseUrl = new Uri(@"https://api.telegram.org/bot/getUpdates");
             responce = client.Execute(request);
 
             var cont = responce.RawBytes;
