@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsServiceTesting.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,9 +74,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MafiaStoryGame\MafiaStoryGame.csproj">
+      <Project>{cd47c493-1229-4a79-b942-b4bde319e09e}</Project>
+      <Name>MafiaStoryGame</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TelegramAPI\TelegramAPI.csproj">
       <Project>{180e7a68-0147-45de-a771-d46b5fe184c4}</Project>
       <Name>TelegramAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TelegramBotService\TelegramBotService.csproj">
+      <Project>{ee73749d-b81d-402b-9108-cbca5d4e9242}</Project>
+      <Name>TelegramBotService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

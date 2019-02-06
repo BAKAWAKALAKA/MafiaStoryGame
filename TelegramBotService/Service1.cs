@@ -14,6 +14,7 @@ namespace TelegramBotService
     {
         public Service1()
         {
+            //приципить бота
             InitializeComponent();
         }
 

@@ -5,20 +5,17 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TelegramAPI
+namespace TelegramAPI.Bot
 {
-    // todo  добавить таймер na проверку доступности телеги 
-    /// <summary>
-    /// простой телега бот который умеет отвечать на команды но ничего не знает о пользователях
-    /// </summary>
-    public abstract class TelegramBot
+    // todo я тут подумала а ведь все "распределение а какие команды сейчас пользователь может делать" можно делать в одной команде которая запрашивает GameManager!!!!!!
+    public class CustomTelegramBot //b,j [p rfr cltkfnm c ctcbzvb
     {
         private Timer IncomingTimer;
         private Timer OutcomingTimer;
         public List<Timer> CustomTimer;
 
         private int MAX_OUTCOMING_MESEGES = 5;
-        private int _me = 000000;
+        private int _me = 367265107;
         //  private event Action InComingEvent;
         //  private event Action OutComingEvent;
 
@@ -28,7 +25,7 @@ namespace TelegramAPI
 
         private Telegram _tlgm;
 
-        public TelegramBot(CommandHandler[] commands)
+        public CustomTelegramBot(CommandHandler[] commands)
         {
             Commands = new List<CommandHandler>();
             Commands.AddRange(commands);
@@ -77,6 +74,8 @@ namespace TelegramAPI
                 }
         }
 
+        
+
         private void SendMessages()
         {
             // по сути все меседжи на отправку что успели накопиться убираются из этой имитированнной очереди
@@ -90,15 +89,7 @@ namespace TelegramAPI
                 foreach (var msg in executemsgs)
                 {
                     //отправить в телегу если не отправилось то плевать мы все равно не всемогущи
-                    if (msg.chat.id==_me)
-                    {
-                        _tlgm.SendMessage(msg.chat.id, msg.text);
-                    }
-                    else
-                    {
-                        _tlgm.SendMessage(msg.chat.id, msg.text);
-                        _tlgm.SendMessage(_me, msg.text);
-                    }
+                    _tlgm.SendMessage(msg.chat.id, msg.text);
                 }
                 lock (flag)
                 {

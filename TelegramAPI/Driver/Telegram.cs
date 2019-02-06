@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
-namespace TelegramApi
+namespace TelegramAPI
 {
     // todo по сути надо будет переделать через интерфейс обертку чтобы не было прямого доступа
     // todo также нужно сделать обновлятель прокси если вдруг теряется доступ
@@ -16,15 +17,21 @@ namespace TelegramApi
     /// </summary>
     public class Telegram
     {
-        private string proxy = "180.183.179.48";
+        private string proxy = "88.19.158.99";
         private int port = 8080;
-        private string _botToken = "";
+        private string _botToken;
         private string requestTemplate = @"https://api.telegram.org/bot{0}/{1}";
         private List<int> ReceivedUpdIsd = new List<int>();
 
 
+        public Telegram()
+        {
+            _botToken = File.ReadAllText(AppContext.BaseDirectory + "token.txt");
+        }
+
         public bool CheckConnection()
         {
+           
             var result = Execute("getMe");
             return result.ok;
         }

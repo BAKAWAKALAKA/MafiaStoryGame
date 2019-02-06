@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TelegramAPI
+namespace WerewolfTheGameServer
 {
-    public interface Message
+    class Program
     {
-    }
-
-    public class OutcomingMessage:Message
-    {
+        static void Main(string[] args)
+        {
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace TelegramAPI
 {
     public interface CommandHandler
     {
-        bool CanRespond(dynamic message);
-       IEnumerable<Message> SendResponce(Message message);
+        bool CanRespond(Messege message);
+       IEnumerable<Messege> SendResponce(Messege message);
     }
 }
