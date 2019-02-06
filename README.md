@@ -5,6 +5,7 @@
 ## Заметки
 
 так как эта репа приватная то этот риид ми будет служить больше для заметок даже нижняя сейчас часть взята с какого то шаблона
+https://ru.stackoverflow.com/questions/668435/%D0%A4%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8-github-issues-projects-pull-requests
 
 ### Prerequisites
 
