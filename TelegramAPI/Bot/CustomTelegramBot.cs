@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TelegramAPI.Bot
 {
-    // todo я тут подумала а ведь все "распределение а какие команды сейчас пользователь может делать" можно делать в одной команде которая запрашивает GameManager!!!!!!
+    
     public class CustomTelegramBot //b,j [p rfr cltkfnm c ctcbzvb
     {
         private Timer IncomingTimer;

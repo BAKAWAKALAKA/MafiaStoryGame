@@ -10,12 +10,33 @@ namespace MafiaStoryGame
     public static class GameManager
     {
         public static int counter;
-        private static List<Room> Rooms { get; set; }
+        public static List<Room> Rooms { get; private set; }
 
         static GameManager()
         {
             Rooms = new List<Room>();
             counter = 1234;
+        }
+
+
+        public static User FindUser(int id)
+        {
+            foreach (var room in Rooms)
+            {
+                var user = room.Users.FirstOrDefault(u=>u.Id==id);
+                if (user != null) return user;
+            }
+            return null;
+        }
+
+        public static Room GetUserRoom(int userId)
+        {
+            foreach (var room in Rooms)
+            {
+                var user = room.Users.FirstOrDefault(u => u.Id == userId);
+                if (user != null) return room;
+            }
+            return null;
         }
 
         public static int CreateNewRoom(User user,string name,int maxUsers)
@@ -39,7 +60,7 @@ namespace MafiaStoryGame
             {
                 if (room.Status==RoomStatus.Wait)
                 {
-                    room.AddUser(user);
+                    return room.AddUser(user);
                 }
                 else
                 {
@@ -56,11 +77,11 @@ namespace MafiaStoryGame
 
             if (!freeRooms.Any()) return "no one";
 
-            var res = "next rooms is free now:";
-            res += "id - name - users/max_users";
+            var res = $"next rooms is free now:{Environment.NewLine}";
+            res += $"id - name - users/max_users{Environment.NewLine}";
             foreach (var room in freeRooms)
             {
-                res += $"{room.RoomId} - {room.Name} - {room.Users.Count} /{room.MaxUsers}";
+                res += $"{room.RoomId} - {room.Name} - {room.Users.Count} /{room.MaxUsers}{Environment.NewLine}";
             }
             return res;
         }
@@ -78,4 +99,6 @@ namespace MafiaStoryGame
             return null;
         }
     }
+
+
 }

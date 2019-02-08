@@ -25,8 +25,6 @@ namespace TelegramTests
 
     public class TlgrBot : TelegramBot
     {
-        private
-
 
         public TlgrBot(CommandHandler[] commands) : base(commands)
         {

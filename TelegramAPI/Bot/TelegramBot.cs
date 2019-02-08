@@ -18,7 +18,7 @@ namespace TelegramAPI
         public List<Timer> CustomTimer;
 
         private int MAX_OUTCOMING_MESEGES = 5;
-        private int _me = 000000;
+        private int _me = 367265107;
         //  private event Action InComingEvent;
         //  private event Action OutComingEvent;
 

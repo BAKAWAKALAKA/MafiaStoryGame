@@ -17,7 +17,7 @@ namespace TelegramAPI
     /// </summary>
     public class Telegram
     {
-        private string proxy = "88.19.158.99";
+        private string proxy = "183.88.16.67";
         private int port = 8080;
         private string _botToken;
         private string requestTemplate = @"https://api.telegram.org/bot{0}/{1}";
@@ -27,7 +27,7 @@ namespace TelegramAPI
         public Telegram()
         {
             _botToken = File.ReadAllText(AppContext.BaseDirectory + "token.txt");
-        }
+     }
 
         public bool CheckConnection()
         {

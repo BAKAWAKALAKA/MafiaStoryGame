@@ -29,24 +29,28 @@ namespace TelegramBotService.Bot
                 var _user = Map(message.from);
                 _user.ChatId = message.chat.id; // todo так как нужно отправлять конкретно в комнату юзеру
                 var result = GameManager.JoinRoom(roomId, _user);
-                if (result) msg.text = $"you're joined to {roomId} room.";
-
-                var list = new List<Messege>();
-                list.Add(msg);
-
-                foreach(var user in GameManager.RoomUsers(roomId))
+                if (result)
                 {
-                    list.Add(new Messege() { chat = new Chat() { id= user.ChatId},  text = $"{message.from.first_name} joined to {roomId} room." });
-                }
+                    msg.text = $"you're joined to {roomId} room.";
 
-                return list;
+                    var list = new List<Messege>();
+                    list.Add(msg);
+
+                    foreach (var user in GameManager.RoomUsers(roomId))
+                    {
+                        if (user.ChatId != user.ChatId)
+                        {
+                            list.Add(new Messege() { chat = new Chat() { id = user.ChatId }, text = $"{message.from.first_name} joined to {roomId} room." });
+                        }
+                    }
+                    return list;
+                }
             }
             else
             {
                 msg.text = "не указан номер";
-                return new Messege[] { msg };
             }
-            
+            return new Messege[] { msg };
         }
 
 

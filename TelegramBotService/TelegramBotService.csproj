@@ -52,11 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bot\CommandAgregator.cs" />
     <Compile Include="Bot\CreateRoomCommand.cs" />
     <Compile Include="Bot\FreeRoomsCommand.cs" />
     <Compile Include="Bot\HelpCommand.cs" />
     <Compile Include="Bot\IdleCommand.cs" />
     <Compile Include="Bot\JoinCommand.cs" />
+    <Compile Include="Bot\LeaveCommand.cs" />
     <Compile Include="Bot\WerewolfTelegramBot.cs" />
     <Compile Include="Service1.cs">
       <SubType>Component</SubType>
