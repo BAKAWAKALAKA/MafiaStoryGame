@@ -10,3 +10,100 @@
 "message":{"message_id":8,"from":{"id":367265107,"is_bot":false,"first_name":"Kate","last_name":"Il","language_code":"ru"},"chat":{"id":367265107,"first_name":"Kate","last_name":"Il","type":"private"},"date":1548800946,"text":"\u0442\u0435\u0431\u0435 \u043c\u043e\u0439 \u0434\u0440\u0443\u0433"}},
 {"update_id":114974118,
 "message":{"message_id":9,"from":{"id":367265107,"is_bot":false,"first_name":"Kate","last_name":"Il","language_code":"ru"},"chat":{"id":367265107,"first_name":"Kate","last_name":"Il","type":"private"},"date":1548800961,"text":"/\u043e\u043f\u043b\u044f"}}]}
+
+картинка и эмодзи в разных сообщениях
+
+{[
+  {
+    "update_id": 387510186,
+    "message": {
+      "message_id": 71,
+      "from": {
+        "id": 367265107,
+        "is_bot": false,
+        "first_name": "Kate",
+        "last_name": "Il",
+        "language_code": "ru"
+      },
+      "chat": {
+        "id": 367265107,
+        "first_name": "Kate",
+        "last_name": "Il",
+        "type": "private"
+      },
+      "date": 1550009580,
+      "photo": [
+        {
+          "file_id": "AgADAgADfqoxGx0SGUtKMDlMhTEMFRnz9A4ABFyRGi9WOAK7DMgEAAEC",
+          "file_size": 1040,
+          "width": 90,
+          "height": 51
+        },
+        {
+          "file_id": "AgADAgADfqoxGx0SGUtKMDlMhTEMFRnz9A4ABL4oJee1xEOCDcgEAAEC",
+          "file_size": 12678,
+          "width": 320,
+          "height": 180
+        },
+        {
+          "file_id": "AgADAgADfqoxGx0SGUtKMDlMhTEMFRnz9A4ABNAWjTpfwW7WD8gEAAEC",
+          "file_size": 55372,
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file_id": "AgADAgADfqoxGx0SGUtKMDlMhTEMFRnz9A4ABHufOvSeR8YfDsgEAAEC",
+          "file_size": 119876,
+          "width": 1280,
+          "height": 720
+        }
+      ]
+    }
+  },
+  {
+    "update_id": 387510187,
+    "message": {
+      "message_id": 72,
+      "from": {
+        "id": 367265107,
+        "is_bot": false,
+        "first_name": "Kate",
+        "last_name": "Il",
+        "language_code": "ru"
+      },
+      "chat": {
+        "id": 367265107,
+        "first_name": "Kate",
+        "last_name": "Il",
+        "type": "private"
+      },
+      "date": 1550009585,
+      "sticker": {
+        "width": 512,
+        "height": 434,
+        "emoji": "😐",
+        "set_name": "Sangatsu_no_Lion",
+        "thumb": {
+          "file_id": "AAQCABPJGoINAARHmMiRmz69hY-OAAIC",
+          "file_size": 4024,
+          "width": 128,
+          "height": 108
+        },
+        "file_id": "CAADAgADaggAAuX3UgOXWJxRto8x_AI",
+        "file_size": 25196
+      }
+    }
+  }
+]}
+
+
+
+
+картинка эмодзи команда и контакт
+{"ok":true,"result":[{"update_id":387510186,
+"message":{"message_id":71,"from":{"id":367265107,"is_bot":false,"first_name":"Kate","last_name":"Il","language_code":"ru"},"chat":{"id":367265107,"first_name":"Kate","last_name":"Il","type":"private"},"date":1550009580,"photo":[{"file_id":"AgADAgADfqoxGx0SGUtKMDlMhTEMFRnz9A4ABFyRGi9WOAK7DMgEAAEC","file_size":1040,"width":90,"height":51},{"file_id":"AgADAgADfqoxGx0SGUtKMDlMhTEMFRnz9A4ABL4oJee1xEOCDcgEAAEC","file_size":12678,"width":320,"height":180},{"file_id":"AgADAgADfqoxGx0SGUtKMDlMhTEMFRnz9A4ABNAWjTpfwW7WD8gEAAEC","file_size":55372,"width":800,"height":450},{"file_id":"AgADAgADfqoxGx0SGUtKMDlMhTEMFRnz9A4ABHufOvSeR8YfDsgEAAEC","file_size":119876,"width":1280,"height":720}]}},{"update_id":387510187,
+"message":{"message_id":72,"from":{"id":367265107,"is_bot":false,"first_name":"Kate","last_name":"Il","language_code":"ru"},"chat":{"id":367265107,"first_name":"Kate","last_name":"Il","type":"private"},"date":1550009585,"sticker":{"width":512,"height":434,"emoji":"\ud83d\ude10","set_name":"Sangatsu_no_Lion","thumb":{"file_id":"AAQCABPJGoINAARHmMiRmz69hY-OAAIC","file_size":4024,"width":128,"height":108},"file_id":"CAADAgADaggAAuX3UgOXWJxRto8x_AI","file_size":25196}}},{"update_id":387510188,
+"message":{"message_id":73,"from":{"id":367265107,"is_bot":false,"first_name":"Kate","last_name":"Il","language_code":"ru"},"chat":{"id":367265107,"first_name":"Kate","last_name":"Il","type":"private"},"date":1550009822,"text":"/top","entities":[{"offset":0,"length":4,"type":"bot_command"}]}},{"update_id":387510189,
+"message":{"message_id":74,"from":{"id":367265107,"is_bot":false,"first_name":"Kate","last_name":"Il","language_code":"ru"},"chat":{"id":367265107,"first_name":"Kate","last_name":"Il","type":"private"},"date":1550009842,"contact":{"phone_number":"+79627238642","first_name":"\u0412\u0430\u043b\u044f","last_name":"\u0411\u0430\u0448\u0442\u0430\u0432\u0435\u043d\u043a\u043e","user_id":298108087}}}]}
+
+core.telegram.org/method/messages.addChatUser

@@ -87,7 +87,6 @@ namespace TelegramBotService.Bot
                         }
                     }
                 }
-
             }
             else
             {
@@ -99,10 +98,7 @@ namespace TelegramBotService.Bot
                         _curentUsers.Add(message.from,cmd);
                     }
                 }
-
-
             }
-
             return _curentUsers.Any();
         }
 

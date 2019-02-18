@@ -11,7 +11,7 @@ namespace TelegramAPI
     /// <summary>
     /// простой телега бот который умеет отвечать на команды но ничего не знает о пользователях
     /// </summary>
-    public abstract class TelegramBot
+    public class TelegramBot
     {
         private Timer IncomingTimer;
         private Timer OutcomingTimer;
@@ -20,7 +20,7 @@ namespace TelegramAPI
         private int MAX_OUTCOMING_MESEGES = 5;
         private int _me = 367265107;
         //  private event Action InComingEvent;
-        //  private event Action OutComingEvent;
+        private event Action OutComingEvent;
 
         private List<CommandHandler> Commands;
         private List<Messege> OutcomingMessages; // вообще лучше наверно иметь какую нибуть другую структуру данных чтобы можно было сортировать по юзеру и игре
@@ -55,6 +55,12 @@ namespace TelegramAPI
             }
         }
 
+        public void Stop()
+        {
+            IncomingTimer.Change(0, 0);
+            while (OutcomingMessages.Any()) { SendMessages(); }
+            OutcomingTimer.Change(0, 0);
+        }
 
         private void GetUpdate()
         {

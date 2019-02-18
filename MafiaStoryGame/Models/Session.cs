@@ -13,7 +13,8 @@ namespace MafiaStoryGame.Models
         public List<User> Users {get;  set; }
         public GameSession Game { get;  set; }
         public RoomStatus Status { get;  set; }
-        public int MaxUsers { get;  set;}
+        public int MaxUsers { get;  set; }
+        public event Action<Dictionary<User,string>> Subscrible;
 
         public bool AddUser(User user)
         {
@@ -25,11 +26,21 @@ namespace MafiaStoryGame.Models
                 {
                     Status = RoomStatus.Game;
                     Game = new GameSession();
+                    Game.Subscrible += Action;
                     //че то чтобы оповестить о начале
                 }
                 return true;
             }
             return false;
+        }
+
+        public void Action(Dictionary<User, string> raw)
+        {
+
+            if (Subscrible != null)
+            {
+                Subscrible(raw);
+            }
         }
 
     }

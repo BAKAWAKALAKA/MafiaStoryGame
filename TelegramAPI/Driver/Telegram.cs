@@ -17,7 +17,7 @@ namespace TelegramAPI
     /// </summary>
     public class Telegram
     {
-        private string proxy = "183.88.16.67";
+        private string proxy = "1.179.181.149";
         private int port = 8080;
         private string _botToken;
         private string requestTemplate = @"https://api.telegram.org/bot{0}/{1}";
@@ -87,6 +87,11 @@ namespace TelegramAPI
             var cmd = $"sendMessage?chat_id={chat}&text={text}";
             var result = Execute(cmd);
             return result.ok;
+        }
+
+        public void GetUserById()
+        {
+
         }
 
         private void MapTo<T>(string json, ref T output)
