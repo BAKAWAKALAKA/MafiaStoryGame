@@ -107,3 +107,193 @@
 "message":{"message_id":74,"from":{"id":367265107,"is_bot":false,"first_name":"Kate","last_name":"Il","language_code":"ru"},"chat":{"id":367265107,"first_name":"Kate","last_name":"Il","type":"private"},"date":1550009842,"contact":{"phone_number":"+79627238642","first_name":"\u0412\u0430\u043b\u044f","last_name":"\u0411\u0430\u0448\u0442\u0430\u0432\u0435\u043d\u043a\u043e","user_id":298108087}}}]}
 
 core.telegram.org/method/messages.addChatUser
+
+
+телега дерьмо!!!
+даты в меседжах хранятся в unix формате 
+а это означает отчет должен вестись от сюда 00:00:00 UTC 1 января 1970 года (четверг)
+а даты это отсчет в секундах от начала отсчета
+// Example of a UNIX timestamp for 11-29-2013 4:58:30
+double timestamp = 1385701110;
+
+// Format our new DateTime object to start at the UNIX Epoch
+System.DateTime dateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+
+// Add the timestamp (number of seconds since the Epoch) to be converted
+dateTime = dateTime.AddSeconds(timestamp);
+
+
+{{
+  "update_id": 387510249,
+  "message": {
+    "message_id": 168,
+    "from": {
+      "id": 367265107,
+      "is_bot": false,
+      "first_name": "Kate",
+      "last_name": "Il",
+      "language_code": "ru"
+    },
+    "chat": {
+      "id": 367265107,
+      "first_name": "Kate",
+      "last_name": "Il",
+      "type": "private"
+    },
+    "date": 1551556656,
+    "text": "Привет! я бот-игра, а точнее клон мафии в около средневиковом сеттинге. вся игра проходит тут. Ты просто создаешь или подключаешься к уже существующей комнате и за тем играешь здесь же.\n Напиши /help чтобы узнать больше о командах или /rules чтобы подробнее узнать о правилах\n Ты всегда можешь поблагодарить написав мне \"/thank СООБЩЕНИЕ\"",
+    "entities": [
+      {
+        "offset": 194,
+        "length": 5,
+        "type": "bot_command"
+      },
+      {
+        "offset": 235,
+        "length": 6,
+        "type": "bot_command"
+      },
+      {
+        "offset": 321,
+        "length": 6,
+        "type": "bot_command"
+      }
+    ]
+  }
+}}
+
+
+
+{{
+  "update_id": 387510250,
+  "message": {
+    "message_id": 169,
+    "from": {
+      "id": 367265107,
+      "is_bot": false,
+      "first_name": "Kate",
+      "last_name": "Il",
+      "language_code": "ru"
+    },
+    "chat": {
+      "id": 367265107,
+      "first_name": "Kate",
+      "last_name": "Il",
+      "type": "private"
+    },
+    "date": 1551556681,
+    "text": "Доступны следующие команды:\nКогда вне игры(комнаты):\n/new - создаёт новую комнату\n/new num - где num число игроков\n/free - показывает доступные комнаты которые ещё не начали игру\n/join - присоединение к рандомной комнате\n/join num - где num это id комнаты\nКогда уже в комнате:\n/exit - выйти из комнаты\nКогда началась игра:\n/info - инфа по состоянию игры\n/info имя_игрока информация об игроке\n/exit - выйти из игры(самовыпил)\nвсе остальное что ты выведешь будет рассчитано как собщаение в игру\n/kill name - убить поселенца (днём) / убить человека (мафия) / проверить поселенца (охотник / лекарь)\nВсегда:\n/top - топ самых крутых участников\n/thank - написать благодарность разработчику\n/rules - описание правил игры\n/story - описание сеттинга игры",
+    "entities": [
+      {
+        "offset": 28,
+        "length": 25,
+        "type": "bold"
+      },
+      {
+        "offset": 53,
+        "length": 4,
+        "type": "bot_command"
+      },
+      {
+        "offset": 82,
+        "length": 4,
+        "type": "bot_command"
+      },
+      {
+        "offset": 87,
+        "length": 3,
+        "type": "italic"
+      },
+      {
+        "offset": 115,
+        "length": 5,
+        "type": "bot_command"
+      },
+      {
+        "offset": 179,
+        "length": 5,
+        "type": "bot_command"
+      },
+      {
+        "offset": 221,
+        "length": 5,
+        "type": "bot_command"
+      },
+      {
+        "offset": 227,
+        "length": 3,
+        "type": "italic"
+      },
+      {
+        "offset": 256,
+        "length": 21,
+        "type": "bold"
+      },
+      {
+        "offset": 277,
+        "length": 5,
+        "type": "bot_command"
+      },
+      {
+        "offset": 302,
+        "length": 21,
+        "type": "bold"
+      },
+      {
+        "offset": 323,
+        "length": 5,
+        "type": "bot_command"
+      },
+      {
+        "offset": 354,
+        "length": 5,
+        "type": "bot_command"
+      },
+      {
+        "offset": 360,
+        "length": 10,
+        "type": "italic"
+      },
+      {
+        "offset": 392,
+        "length": 5,
+        "type": "bot_command"
+      },
+      {
+        "offset": 493,
+        "length": 5,
+        "type": "bot_command"
+      },
+      {
+        "offset": 499,
+        "length": 4,
+        "type": "code"
+      },
+      {
+        "offset": 595,
+        "length": 8,
+        "type": "bold"
+      },
+      {
+        "offset": 603,
+        "length": 4,
+        "type": "bot_command"
+      },
+      {
+        "offset": 638,
+        "length": 6,
+        "type": "bot_command"
+      },
+      {
+        "offset": 683,
+        "length": 6,
+        "type": "bot_command"
+      },
+      {
+        "offset": 713,
+        "length": 6,
+        "type": "bot_command"
+      }
+    ]
+  }
+}}

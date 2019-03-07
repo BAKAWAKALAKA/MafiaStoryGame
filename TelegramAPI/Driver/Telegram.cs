@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using TBDBCommunication;
+using NLog;
 
 namespace TelegramAPI
 {
@@ -17,21 +19,37 @@ namespace TelegramAPI
     /// </summary>
     public class Telegram
     {
-        private string proxy = "1.179.181.149";
-        private int port = 8080;
+        private string proxy = "180.250.253.155";
+        private int port = 44803;
         private string _botToken;
         private string requestTemplate = @"https://api.telegram.org/bot{0}/{1}";
         private List<int> ReceivedUpdIsd = new List<int>();
-
-
+        private int _lastUpdate;
+        private Logger _log = LogManager.GetCurrentClassLogger();
         public Telegram()
         {
-            _botToken = File.ReadAllText(AppContext.BaseDirectory + "token.txt");
-     }
+            try{
+                _botToken = File.ReadAllText(AppContext.BaseDirectory + "token.txt");
+                var str = File.ReadAllText(AppContext.BaseDirectory + "lastdate.txt");
+                if (!int.TryParse(str, out _lastUpdate))
+                {
+                    var time = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                    var current = DateTime.Now.Subtract(new TimeSpan(3,0,0)); // ибо рашка
+                    var diff = current - time;
+                    _lastUpdate = (int)diff.TotalSeconds;
+                }
+
+                var wtf = CheckConnection();
+                _log.Info($"start since: {_lastUpdate} status: {wtf}");
+            }
+            catch(Exception e)
+            {
+                throw new UnauthorizedAccessException();
+            }  
+        }
 
         public bool CheckConnection()
         {
-           
             var result = Execute("getMe");
             return result.ok;
         }
@@ -51,11 +69,12 @@ namespace TelegramAPI
         public IEnumerable<Messege> Update()
         {
             List<Messege> result = new List<Messege>();
+
             var res = Execute("getUpdates");
-            if (res.ok)
+            if (res !=null && res.ok)
             {
                 var updates = res.result.Children();
-                foreach(JObject update in updates)
+                foreach (JObject update in updates)
                 {
                     var msg = new Messege();
                     var jProperties = update.Properties();
@@ -73,33 +92,37 @@ namespace TelegramAPI
                             if (prop.Name == "from") msg.from = JsonConvert.DeserializeObject<User>(prop.Value.ToString());
                             if (prop.Name == "chat") msg.chat = JsonConvert.DeserializeObject<Chat>(prop.Value.ToString());
                         }
-                        result.Add(msg);
-                        ReceivedUpdIsd.Add(upd_id);
+
+                        if (msg.date > _lastUpdate)
+                        {
+                            _log.Trace($"new message from {msg.from.id} to chat:{msg.chat.id} text:{msg.text}");
+                            result.Add(msg);
+                            ReceivedUpdIsd.Add(upd_id);
+                            _lastUpdate = msg.date;
+                         //   File.WriteAllText(AppContext.BaseDirectory + "lastdate.txt", msg.date.ToString());
+                        }
                     }
                 }
             }
             return result;
         }
 
-        public bool SendMessage(int chat,string text)
+        public bool SendMessage(int chat, string text)
         {
             // todo пока так но надо переделать на пост ибо какая то херня все в url прописывать
             var cmd = $"sendMessage?chat_id={chat}&text={text}";
             var result = Execute(cmd);
+            if (result == null) return false;
             return result.ok;
         }
 
-        public void GetUserById()
-        {
-
-        }
 
         private void MapTo<T>(string json, ref T output)
         {
             // вообще хотелось бы метод который парсил с джейсона в определенный класс
             throw new NotFiniteNumberException();
         }
-        
+
         private Response Execute(string cmd)
         {
             var _base = string.Format(requestTemplate, _botToken, cmd);
@@ -107,17 +130,25 @@ namespace TelegramAPI
             client.Proxy = new System.Net.WebProxy(proxy, port);
             var request = new RestRequest(Method.GET);
             var responce = client.Execute(request);
-            var result = JsonConvert.DeserializeObject<Response>(responce.Content);
-            return result;
+            if (responce.IsSuccessful)
+            {
+                var result = JsonConvert.DeserializeObject<Response>(responce.Content);
+                return result;
+            }
+            else
+            {
+                _log.Error($"responce status:{responce.StatusCode} content: {responce.Content} error:{responce.ErrorMessage}");
+                return null;
+            }
         }
     }
-    
+
     public class Response
     {
         public bool ok { get; set; }
-     //   public string description { get; set; }
+        //   public string description { get; set; }
         public dynamic result { get; set; }
-       // public string error_code { get; set; }
+        // public string error_code { get; set; }
     }
 
     public class Update
@@ -142,7 +173,7 @@ namespace TelegramAPI
         public Messege reply_to_message { get; set; }
         public string text { get; set; }
         public MessageEntity entities { get; set; }
-       // там еще много чего...стоилобы добавить
+        // там еще много чего...стоилобы добавить
     }
 
     public class Chat
@@ -188,7 +219,7 @@ namespace TelegramAPI
         public bool disable_web_page_preview { get; set; } = false;
         public bool disable_notification { get; set; } = false;
         public int reply_to_message_id { get; set; }
-      //  public int reply_markup { get; set; } //потом кнопочки добавим  а тотам все сложно
+        //  public int reply_markup { get; set; } //потом кнопочки добавим  а тотам все сложно
     }
 
 

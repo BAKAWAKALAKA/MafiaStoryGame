@@ -35,7 +35,7 @@ namespace TelegramBotService.Bot
 
                     var list = new List<Messege>();
                     list.Add(msg);
-
+                    //todo fall 
                     foreach (var user in GameManager.RoomUsers(roomId))
                     {
                         if (user.ChatId != user.ChatId)

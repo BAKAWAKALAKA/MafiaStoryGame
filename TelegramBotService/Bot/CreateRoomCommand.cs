@@ -19,7 +19,7 @@ namespace TelegramBotService.Bot
         {
             var user = Map(message.from);
             user.ChatId = message.chat.id; // todo так как нужно отправлять конкретно в комнату юзеру
-            var roomId = GameManager.CreateNewRoom(user,"GAME",3);
+            var roomId = GameManager.CreateNewRoom(user,"GAME",2);
 
             return new Messege[] { new Messege() { chat = message.chat, text = $"room created! id = {roomId}"} };
         }

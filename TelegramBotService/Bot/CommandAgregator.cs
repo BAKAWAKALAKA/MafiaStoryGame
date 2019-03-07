@@ -27,20 +27,23 @@ namespace TelegramBotService.Bot
                 new JoinCommand(),
                 new FreeRoomsCommand(),
             };
-            _inGame = new List<CommandHandler>()
-            {
-                new IdleCommand()
-            };
 
             _inRoom = new List<CommandHandler>()
             {
+                 new JoinCommand()
+            };
 
+            _inGame = new List<CommandHandler>()
+            {
+                 new IdleCommand(),
+                 new KillCommand()
             };
 
             _End = new List<CommandHandler>()
             {
 
             };
+            _curentUsers = new Dictionary<User, CommandHandler>();
         }
 
         public bool CanRespond(Messege message)
@@ -106,7 +109,10 @@ namespace TelegramBotService.Bot
         {
             // выдавливаем эту сранную команду которую может позволить себе этот сраный юзер
             // хотя может хранить словарь юзера и команды которую задавать будем в CanRespond а вызывать и убирать тут
-            throw new NotImplementedException();
+            var meseges = _curentUsers.First().Value.SendResponce(message);
+            _curentUsers.Remove(_curentUsers.First().Key);
+            return meseges;
+            //throw new NotImplementedException();
         }
     }
 }

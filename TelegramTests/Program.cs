@@ -14,7 +14,7 @@ namespace TelegramTests
             {
                 try
                 {
-                    AsServiceTesting.Do();
+                    DBCommunicationTest.Do();
                 }
                 catch(Exception e)
                 {

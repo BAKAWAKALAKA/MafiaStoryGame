@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WerewolfTheGameServer", "We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotAndGameUnitTests", "BotAndGameUnitTests\BotAndGameUnitTests.csproj", "{5DD148DA-FC45-4D92-B362-D7B250BB5FF6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Telegram", "Telegram", "{D4E0CE7B-0512-46CF-A168-83478418F993}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TBDBCommunication", "TBDBCommunication\TBDBCommunication.csproj", "{52DABA75-0F18-492D-941F-E72922A6CB2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,9 +49,19 @@ Global
 		{5DD148DA-FC45-4D92-B362-D7B250BB5FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DD148DA-FC45-4D92-B362-D7B250BB5FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DD148DA-FC45-4D92-B362-D7B250BB5FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52DABA75-0F18-492D-941F-E72922A6CB2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52DABA75-0F18-492D-941F-E72922A6CB2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52DABA75-0F18-492D-941F-E72922A6CB2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52DABA75-0F18-492D-941F-E72922A6CB2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EE73749D-B81D-402B-9108-CBCA5D4E9242} = {D4E0CE7B-0512-46CF-A168-83478418F993}
+		{180E7A68-0147-45DE-A771-D46B5FE184C4} = {D4E0CE7B-0512-46CF-A168-83478418F993}
+		{4BF777AA-8633-4719-9999-FFA3A9A72190} = {D4E0CE7B-0512-46CF-A168-83478418F993}
+		{52DABA75-0F18-492D-941F-E72922A6CB2A} = {D4E0CE7B-0512-46CF-A168-83478418F993}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B300C48A-5C50-471E-9BBB-7B079C84B8F8}
