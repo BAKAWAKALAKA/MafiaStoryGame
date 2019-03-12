@@ -50,7 +50,7 @@ namespace TelegramBotService.Bot
                     result.Add(new Messege() { chat = message.chat, text = "голос принят" });
                     foreach (var actr in room.Game.Actors)
                     {
-                        result.Add(new Messege() { chat = message.chat, text = $"{actor.Alias} проголосовал за {victim.Alias}" });
+                        result.Add(new Messege() { chat = new Chat() { id= actr.User.ChatId}, text = $"{actor.Alias} проголосовал за {victim.Alias}" });
                     }
                 }
             }
@@ -75,7 +75,7 @@ namespace TelegramBotService.Bot
                                 room.Game.WerewolfsChoice.Add(actor, victim);
                                 foreach (var werewolf in werewolfs)
                                 {
-                                    result.Add(new Messege() { chat = message.chat, text = $"{actor.Alias} решил пойти {victim.Alias}" });
+                                    result.Add(new Messege() { chat = new Chat() { id = werewolf.User.ChatId }, text = $"{actor.Alias} проголосовал за {victim.Alias}" });
                                 }
                             }
                             if (actor.Role == MafiaStoryGame.Models.Roles.Hunter)
@@ -85,7 +85,7 @@ namespace TelegramBotService.Bot
                                 room.Game.HunterChoice.Add(actor, victim);
                                 foreach (var hunter in hunters)
                                 {
-                                    result.Add(new Messege() { chat = message.chat, text = $"{actor.Alias} решил пойти за {victim.Alias}" });
+                                    result.Add(new Messege() { chat = new Chat() { id = hunter.User.ChatId }, text = $"{actor.Alias} решил пойти за {victim.Alias}" });
                                 }
                             }
                             if (actor.Role == MafiaStoryGame.Models.Roles.Priest)
@@ -94,7 +94,7 @@ namespace TelegramBotService.Bot
                                 room.Game.PriestsChoice.Add(actor, victim);
                                 foreach (var priest in priests)
                                 {
-                                    result.Add(new Messege() { chat = message.chat, text = $"{actor.Alias} решил пойти за {victim.Alias}" });
+                                    result.Add(new Messege() { chat = new Chat() { id = priest.User.ChatId }, text = $"{actor.Alias} решил пойти за {victim.Alias}" });
                                 }
                             }
                         }
