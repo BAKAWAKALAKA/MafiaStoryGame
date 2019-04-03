@@ -77,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsServiceTesting.cs" />
-    <Compile Include="DBCommunicationText.cs" />
+    <Compile Include="DBCommunicationTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

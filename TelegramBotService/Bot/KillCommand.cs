@@ -14,7 +14,7 @@ namespace TelegramBotService.Bot
         //todo команда еще не реализована в игровой сессии
         public bool CanRespond(Messege message)
         {
-            if (message.text.StartsWith("/kill"))
+            if (message.text.ToLower().StartsWith("/kill"))
             {
                 var room = GameManager.GetUserRoom(message.from.id);
                 return (room.Game.GameState == MafiaStoryGame.Models.GameState.EndDay ||

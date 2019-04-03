@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Data.SQLite;
 using System.Data.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TBDBCommunication
 {

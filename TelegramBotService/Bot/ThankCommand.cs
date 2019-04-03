@@ -3,23 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using TelegramAPI;
 using MafiaStoryGame;
+using System.Reflection;
 
 namespace TelegramBotService.Bot
 {
-    public class FreeRoomsCommand : CommandHandler
+    public class ThankCommand : CommandHandler
     {
         public bool CanRespond(Messege message)
         {
-            return message.text.ToLower().StartsWith("/free");
+            return message.text.ToLower().StartsWith("/thank");
         }
 
         public IEnumerable<Messege> SendResponce(Messege message)
         {
-            var msg = new Messege() { chat = message.chat };
-
-            msg.text = GameManager.SeeFreeRoomsInfo();
+            var text = File.ReadAllText(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\thank.txt");
+            var msg = new Messege()
+            {
+                chat = message.chat,
+                text = text
+            };
 
             return new Messege[] { msg };
         }

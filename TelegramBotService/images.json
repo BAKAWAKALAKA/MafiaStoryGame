@@ -1,0 +1,42 @@
+{
+  {
+    "key": "werewolf",
+    "id": "23444"
+  },
+  {
+    "key": "habitan",
+    "id": "23444"
+  },
+  {
+    "key": "priest",
+    "id": "23444"
+  },
+  {
+    "key": "hunter",
+    "id": "23444"
+  },
+  {
+    "key": "morning",
+    "id": "23444"
+  },
+  {
+    "key": "day",
+    "id": "23444"
+  },
+  {
+    "key": "night",
+    "id": "23444"
+  },
+  {
+    "key": "werewolf_win",
+    "id": "23444"
+  },
+  {
+    "key": "habitan_win",
+    "id": "23444"
+  },
+  {
+    "key": "game_over",
+    "id": "23444"
+  },
+}

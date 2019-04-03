@@ -15,7 +15,7 @@ namespace TelegramTests
         {
             using (var ctx = new TBDBContext())
             {
-                var user = ctx.users;
+                var user = ctx.users.AsEnumerable();
                 var c = user.Count();
             }
         }

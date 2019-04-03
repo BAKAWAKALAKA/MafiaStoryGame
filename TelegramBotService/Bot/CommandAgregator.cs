@@ -30,7 +30,7 @@ namespace TelegramBotService.Bot
 
             _inRoom = new List<CommandHandler>()
             {
-                 new JoinCommand()
+
             };
 
             _inGame = new List<CommandHandler>()

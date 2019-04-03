@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TelegramAPI;
+using System.IO;
 using MafiaStoryGame;
+using System.Reflection;
 
 namespace TelegramBotService.Bot
 {
@@ -12,15 +14,16 @@ namespace TelegramBotService.Bot
     {
         public bool CanRespond(Messege message)
         {
-            return message.text.Contains("/help");
+            return message.text.ToLower().StartsWith("/help");
         }
 
         public IEnumerable<Messege> SendResponce(Messege message)
         {
+            var text = File.ReadAllText(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)+@"\help.txt");
             var msg = new Messege()
             {
                 chat = message.chat,
-                text = "Привет! тут должен был быть хелпер который помог бы разобраться в командах но мне лень"
+                text = text
             };
 
             return new Messege[] { msg };

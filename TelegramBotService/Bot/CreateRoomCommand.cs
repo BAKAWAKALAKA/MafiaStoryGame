@@ -12,7 +12,7 @@ namespace TelegramBotService.Bot
     {
         public bool CanRespond(Messege message)
         {
-            return message.text.Contains("/new");
+            return message.text.ToLower().StartsWith("/new");
         }
 
         public IEnumerable<Messege> SendResponce(Messege message)

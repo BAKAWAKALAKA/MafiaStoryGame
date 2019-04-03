@@ -21,7 +21,7 @@ namespace MafiaStoryGame
 
         static GameManager()
         {
-            
+            Rooms = new List<Room>();
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             Names = new List<string>();
             var json = File.ReadAllText(path+ @"\Dialogs\names_female.json");
@@ -113,7 +113,7 @@ namespace MafiaStoryGame
             // todo переделать т к наверно лучше предовать структуру чем стрингу
             var freeRooms = Rooms.Where(q => q.Status == RoomStatus.Wait).ToList();
 
-            if (!freeRooms.Any()) return "no one";
+            if (!freeRooms.Any()) return "**no one**";
 
             var res = $"next rooms is free now:{Environment.NewLine}";
             res += $"id - name - users/max_users{Environment.NewLine}";

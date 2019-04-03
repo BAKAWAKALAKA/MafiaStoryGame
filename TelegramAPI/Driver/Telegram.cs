@@ -19,8 +19,8 @@ namespace TelegramAPI
     /// </summary>
     public class Telegram
     {
-        private string proxy = "180.250.253.155";
-        private int port = 44803;
+        private string proxy = "217.182.92.162";
+        private int port = 3128;
         private string _botToken;
         private string requestTemplate = @"https://api.telegram.org/bot{0}/{1}";
         private List<int> ReceivedUpdIsd = new List<int>();
@@ -44,6 +44,7 @@ namespace TelegramAPI
             }
             catch(Exception e)
             {
+                _log.Info(e);
                 throw new UnauthorizedAccessException();
             }  
         }
@@ -69,6 +70,8 @@ namespace TelegramAPI
         public IEnumerable<Messege> Update()
         {
             List<Messege> result = new List<Messege>();
+            List<message> resultDb = new List<message>();
+            List<user> newUsers = new List<user>();
 
             var res = Execute("getUpdates");
             if (res !=null && res.ok)
@@ -97,6 +100,22 @@ namespace TelegramAPI
                         {
                             _log.Trace($"new message from {msg.from.id} to chat:{msg.chat.id} text:{msg.text}");
                             result.Add(msg);
+
+                            resultDb.Add( new message()
+                            {
+                                chat_id = msg.chat.id,
+                                message_id = msg.message_id,
+                                date = msg.date,
+                                text = msg_content.ToString(),
+                                user_id = msg.from.id
+                            });
+                            newUsers.Add(new user()
+                            {
+                                 user_id = msg.from.id,
+                                 first_name = msg.from.first_name,
+                                 last_name = msg.from.last_name,
+                                 username = msg.from.username
+                            });
                             ReceivedUpdIsd.Add(upd_id);
                             _lastUpdate = msg.date;
                          //   File.WriteAllText(AppContext.BaseDirectory + "lastdate.txt", msg.date.ToString());
@@ -104,15 +123,84 @@ namespace TelegramAPI
                     }
                 }
             }
+
+            using (var ctx = new TBDBContext())
+            {
+                // записываем сразу ибо итак понятно что это новые сообщения
+                if(resultDb.Count()>0)
+                {
+                    ctx.messages.AddRange(resultDb);
+                    // надо сделать проверку от тех кто уже писал с момента запуска
+                    // чтобы меньше обращений в бд было
+                }
+               
+                // отчищаем от уже записанных
+
+                var users = ctx.users.Select(q=>q.user_id).ToList();
+                var rawUsers = newUsers.Where(q=>!users.Contains(q.user_id));
+                if(rawUsers.Count()>0)
+                ctx.users.AddRange(rawUsers);
+                ctx.SaveChanges();
+            }
+
             return result;
         }
 
         public bool SendMessage(int chat, string text)
         {
             // todo пока так но надо переделать на пост ибо какая то херня все в url прописывать
-            var cmd = $"sendMessage?chat_id={chat}&text={text}";
+            var cmd = $"sendMessage?chat_id={chat}&parse_mode=HTML&text={text}";
             var result = Execute(cmd);
-            if (result == null) return false;
+            if (result == null)
+            {
+                _log.Debug("fail when sending");
+                return false;
+            }
+
+            //using (var ctx = new TBDBContext())
+            //{
+            //    // записываем сразу ибо итак понятно что это новые сообщения
+            //    ctx.messages.AddRange(new message()
+            //    {
+            //        chat_id = chat,
+            //        message_id = 0,
+            //       // date = msg.date,
+            //        text = text,
+            //        user_id = chat
+            //    });
+                 
+            //    ctx.SaveChanges();
+            //}
+
+            return result.ok;
+        }
+
+        public bool SendMessage(int chat, SendingMessage message)
+        {
+            // todo пока так но надо переделать на пост ибо какая то херня все в url прописывать
+            var cmd = $"sendMessage";
+            var result = Execute(cmd);
+            if (result == null)
+            {
+                _log.Debug("fail when sending");
+                return false;
+            }
+
+            //using (var ctx = new TBDBContext())
+            //{
+            //    // записываем сразу ибо итак понятно что это новые сообщения
+            //    ctx.messages.AddRange(new message()
+            //    {
+            //        chat_id = chat,
+            //        message_id = 0,
+            //       // date = msg.date,
+            //        text = text,
+            //        user_id = chat
+            //    });
+
+            //    ctx.SaveChanges();
+            //}
+
             return result.ok;
         }
 
@@ -141,6 +229,30 @@ namespace TelegramAPI
                 return null;
             }
         }
+
+        private Response ExecutePost(string cmd, SendingMessage sendingMessage)
+        {
+            var _base = string.Format(requestTemplate, _botToken, cmd);
+            var client = new RestClient(_base);
+            client.Proxy = new System.Net.WebProxy(proxy, port);
+
+            var request = new RestRequest(Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(sendingMessage);
+
+            var responce = client.Execute(request);
+            if (responce.IsSuccessful)
+            {
+                var result = JsonConvert.DeserializeObject<Response>(responce.Content);
+                return result;
+            }
+            else
+            {
+                _log.Error($"responce status:{responce.StatusCode} content: {responce.Content} error:{responce.ErrorMessage}");
+                return null;
+            }
+        }
+
     }
 
     public class Response
@@ -161,6 +273,35 @@ namespace TelegramAPI
         // todo доделать!!!!
     }
 
+
+    public class SendingMessage
+    {
+        public int chat_id;
+        public string text;
+        public string parse_mode;
+      //  public bool disable_web_page_preview;
+       // public bool disable_notification;
+        public int reply_to_message_id;
+        public ReplayAndMark reply_markup;
+    }
+
+    public interface ReplayAndMark
+    {
+    }
+
+    public class InlineKeyboardMarkup : ReplayAndMark
+    {
+        public InlineKeyboardButton inline_keyboard { get; set;}
+    }
+
+    public class InlineKeyboardButton
+    {
+        public string text { get; set; } //для текста кнопки
+        public string url { get; set; }
+        public string callback_data { get; set; } //будет отдано
+        public string switch_inline_query { get; set; }
+        public string switch_inline_query_current_chat { get; set; }
+    }
 
     public class Messege
     {

@@ -17,12 +17,12 @@ namespace WerewolfTheGameServer
             var tt = GameManager.Names;
             var logger = LogManager.GetCurrentClassLogger();
             logger.Info("Hello World");
-            var bot = new TelegramBot(new CommandHandler[] { new CommandAgregator(), new HelpCommand()});
+            var bot = new TelegramBot(new CommandHandler[] { new CommandAgregator(), new HelpCommand(), new StartCommand(), new ThankCommand() });
             GameManager.Subscrible += bot.SendCustomMessages;
             var admin = new Admin.AdminExtension();
             while (true)
             {
-               var str = Console.ReadLine();
+                var str = Console.ReadLine();
                 admin.Execute(str);
             }
         }

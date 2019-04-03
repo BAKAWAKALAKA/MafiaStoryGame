@@ -12,7 +12,7 @@ namespace TelegramBotService.Bot
     {
         public bool CanRespond(Messege message)
         {
-            return message.text.Contains("/join");
+            return message.text.ToLower().StartsWith("/join");
         }
 
         public IEnumerable<Messege> SendResponce(Messege message)
