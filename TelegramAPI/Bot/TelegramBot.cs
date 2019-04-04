@@ -95,28 +95,39 @@ namespace TelegramAPI
 
                     executemsgs = OutcomingMessages.Take(MAX_OUTCOMING_MESEGES);
 
+                    var executedMsgs = new List<Messege>();
                     foreach (var msg in executemsgs)
                     {
                         //отправить в телегу если не отправилось то плевать мы все равно не всемогущи
                         _log.Trace($"sending to:{msg.chat.id} text: {msg.text}");
+                        
                         if (msg.chat.id == _me)
                         {
-                            _tlgm.SendMessage(msg.chat.id, msg.text);
+                            if (_tlgm.SendMessage(msg.chat.id, msg.text))
+                            {
+                                executedMsgs.Add(msg);
+                            }
                         }
                         else
                         {
-                            _tlgm.SendMessage(msg.chat.id, msg.text);
+                            if (_tlgm.SendMessage(msg.chat.id, msg.text))
+                            {
+                                executedMsgs.Add(msg);
+                            }
                             _tlgm.SendMessage(_me, $"from:{msg.chat.id} send {msg.text}");
                         }
-                    }
-                    lock (flag)
+                    } 
+                    OutcomingMessages = OutcomingMessages.Except(executedMsgs).ToList(); // очищаем то что уже отправили
+                    if (executedMsgs.Count() < executemsgs.Count())
                     {
-                        OutcomingMessages = OutcomingMessages.Except(executemsgs).ToList(); // очищаем то что уже отправили
+                        //прокси отпала надо установить новую
+                        _tlgm.SetProxy();
                     }
                 }
             }
             catch (Exception e)
             {
+                _tlgm.SetProxy();
                 _log.Debug(e);
             }
         }

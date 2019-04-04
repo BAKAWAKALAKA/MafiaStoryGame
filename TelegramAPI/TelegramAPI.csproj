@@ -76,9 +76,12 @@
   <ItemGroup>
     <Compile Include="Bot\CommandHandler.cs" />
     <Compile Include="Bot\CustomTelegramBot.cs" />
+    <Compile Include="Bot\TelegramBotWithFreeProxy.cs" />
     <Compile Include="Driver\Telegram.cs" />
     <Compile Include="Bot\TelegramBot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyServerGrabber.cs" />
+    <Compile Include="ProxyServerGrabberFromFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lastdate.txt">

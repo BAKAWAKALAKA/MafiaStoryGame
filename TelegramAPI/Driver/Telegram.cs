@@ -26,6 +26,8 @@ namespace TelegramAPI
         private List<int> ReceivedUpdIsd = new List<int>();
         private int _lastUpdate;
         private Logger _log = LogManager.GetCurrentClassLogger();
+        private ProxyServerGrabberFromFile _proxy;
+
         public Telegram()
         {
             try{
@@ -39,8 +41,10 @@ namespace TelegramAPI
                     _lastUpdate = (int)diff.TotalSeconds;
                 }
 
+                _proxy = new ProxyServerGrabberFromFile();
+                var ps = SetProxy();
                 var wtf = CheckConnection();
-                _log.Info($"start since: {_lastUpdate} status: {wtf}");
+                _log.Info($"start since: {_lastUpdate} status: {wtf} proxy {proxy}:{port} success: {ps}");
             }
             catch(Exception e)
             {
@@ -51,14 +55,36 @@ namespace TelegramAPI
 
         public bool CheckConnection()
         {
-            var result = Execute("getMe");
-            return result.ok;
+            try
+            {
+                var result = Execute("getMe");
+                return result.ok;
+            }
+            catch (Exception e)
+            {
+                _log.Info(e);
+                return false;
+            }
         }
 
-        public void SetProxy(string proxy, int port)
+        public bool SetProxy()
         {
-            // принудительно установить определеную проксю
-            // возможно стоило бы сделать тут что то типо парсера сайта глеба пока не найдется подходящий вариант
+            var res = _proxy.current_proxy;
+            _log.Info($"set new proxy {res}");
+            while (res !=null)
+            {
+                var list = res.Split(':');
+                proxy = list.First();
+                port =int.Parse(list.Last());
+                if (CheckConnection())
+                {
+                    _log.Info($"success");
+                    return true;
+                }
+                res = _proxy.current_proxy;
+                _log.Info($"set new proxy {res}");
+            }
+            return false;
         }
 
 
@@ -116,6 +142,7 @@ namespace TelegramAPI
                                  last_name = msg.from.last_name,
                                  username = msg.from.username
                             });
+
                             ReceivedUpdIsd.Add(upd_id);
                             _lastUpdate = msg.date;
                          //   File.WriteAllText(AppContext.BaseDirectory + "lastdate.txt", msg.date.ToString());
