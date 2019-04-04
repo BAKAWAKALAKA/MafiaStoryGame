@@ -18,8 +18,14 @@ namespace TelegramBotService.Bot
         public IEnumerable<Messege> SendResponce(Messege message)
         {
             var user = Map(message.from);
+            var maxUsers = 5;
             user.ChatId = message.chat.id; // todo так как нужно отправлять конкретно в комнату юзеру
-            var roomId = GameManager.CreateNewRoom(user,"GAME",2);
+            var parametrs = message.text.Split(' ');
+            if (parametrs.Any() && parametrs.Count()>2)
+            {
+                int.TryParse(parametrs[1],out maxUsers);
+            }
+            var roomId = GameManager.CreateNewRoom(user,"GAME",maxUsers);
 
             return new Messege[] { new Messege() { chat = message.chat, text = $"room created! id = {roomId}"} };
         }
@@ -28,7 +34,7 @@ namespace TelegramBotService.Bot
         {
             var _user = new MafiaStoryGame.Models.User();
             _user.Id = user.id;
-            _user.UserName = user.username;
+            _user.UserName = (string.IsNullOrEmpty(user.username))? $"{user.first_name} {user.last_name}" : user.username;
             return _user;
         }
 

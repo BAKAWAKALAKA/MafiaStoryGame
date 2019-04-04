@@ -67,7 +67,6 @@ namespace MafiaStoryGame.Models
     public enum RoomStatus
     {
         Wait,
-        Game,
-        End
+        Game
     }
 }

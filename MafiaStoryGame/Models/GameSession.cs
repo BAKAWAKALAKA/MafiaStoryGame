@@ -72,6 +72,7 @@ namespace MafiaStoryGame.Models
         }
         private void RolesMaker()
         {
+            /// 3 - 1 vfabz 2 ;bntkz
             /// 4 - 1 мафия 3 жителя
             /// 5 - 1 мафия 1 комисар 3 жителя 
             /// 6 - 2 мафии 1 комисар 3 жителя
@@ -82,7 +83,7 @@ namespace MafiaStoryGame.Models
             var list = new List<Roles>();
 
 
-            Actors[3].Role = Roles.Werewolves;
+            Actors[2].Role = Roles.Werewolves;
 
             if (Actors.Count > 4)
             {
@@ -342,7 +343,17 @@ namespace MafiaStoryGame.Models
             }
             foreach (var not in notification)
                 _log.Info($"notify {not.Key.Id} text: {not.Value}");
-            return notification;
+
+            var result = new Dictionary<User, string>();
+            foreach (var nn in notification)
+            {
+                var atr = Actors.First(q=>q.User.Id==nn.Key.Id);
+                if(atr.Status!= ActorStatus.Leave)
+                {
+                    result.Add(nn.Key,nn.Value);
+                }
+            }
+            return result;
         }
 
         private bool isGameOver()

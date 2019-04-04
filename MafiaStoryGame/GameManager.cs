@@ -76,8 +76,9 @@ namespace MafiaStoryGame
             return null;
         }
 
-        public static int CreateNewRoom(User user,string name,int maxUsers)
+        public static int CreateNewRoom(User user,string name,int maxUsers = 0)
         {
+            var max = (maxUsers > 2) ? maxUsers : 3;
             var room = new Room(user, name, maxUsers, counter++);
             room.Subscrible += Action;
             Rooms.Add(room);
@@ -154,11 +155,12 @@ namespace MafiaStoryGame
         {
             //todo придумать как убить комнату
             var room = Rooms.FirstOrDefault(q=>q.Game.Equals(session));
-            var users = room.Users;
+            var actors = room.Game.Actors;
             var res = new Dictionary<User, string>();
-            foreach (var user in users)
+            foreach (var actor in actors)
             {
-                res.Add(user, $"комната {room.RoomId} удалена!");
+                if(actor.User!=null)
+                res.Add(actor.User, $"комната {room.RoomId} удалена!");
             }
             Action(res);
             room.KillYourself();

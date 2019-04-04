@@ -26,6 +26,7 @@ namespace MafiaStoryGame.Models
     public enum ActorStatus
     {
         Live=0,
-        Dead=1
+        Dead=1,
+        Leave = 2
     }
 }

@@ -13,7 +13,7 @@ namespace TelegramBotService.Bot
         public bool CanRespond(Messege message)
         {
             var user = GameManager.FindUser(message.from.id);
-            return (user != null) ? true : false;
+            return (user != null) ? message.text.StartsWith("/exit") : false;
         }
 
         public IEnumerable<Messege> SendResponce(Messege message)
@@ -22,16 +22,16 @@ namespace TelegramBotService.Bot
             var room = GameManager.GetUserRoom(message.from.id);
             var user = GameManager.FindUser(message.from.id);
 
-            if (room.Users.Count<2)
-            {
-                responces.Add(new Messege() { chat = new Chat() { id = user.ChatId }, text = $"you quit from {room.RoomId} room." });
-                return responces;
-            }
-
             if (room.Status == MafiaStoryGame.Models.RoomStatus.Game)
             {
-                room.Users.Remove(user);
-
+                var actor = room.Game.Actors.FirstOrDefault(q=>q.User.Id==user.Id);
+                actor.Status = MafiaStoryGame.Models.ActorStatus.Leave;
+                actor.User = null;
+                responces.Add(new Messege() { chat = new Chat() { id = user.ChatId }, text = $"you quit from {room.RoomId} room." });
+                foreach (var _user in room.Users)
+                {
+                    responces.Add(new Messege() { chat = new Chat() { id = _user.ChatId }, text = $"User {actor.Name} quit from room. Now users: {room.Users}/{room.MaxUsers}" });
+                }
             }
             else
             {
@@ -39,9 +39,14 @@ namespace TelegramBotService.Bot
                 responces.Add(new Messege() { chat = new Chat() { id = user.ChatId }, text = $"you quit from {room.RoomId} room." });
                 foreach (var _user in room.Users)
                 {
-                    responces.Add(new Messege() { chat = new Chat() { id = _user.ChatId }, text = $"Some user quit from room. Now useres: {room.Users}/{room.MaxUsers}" });
+                    responces.Add(new Messege() { chat = new Chat() { id = _user.ChatId }, text = $"Some user quit from room. Now users: {room.Users}/{room.MaxUsers}" });
+                }
+                if (!room.Users.Any())
+                {
+                    GameManager.Rooms.Remove(room);
                 }
             }
+
             return responces;
         }
     }

@@ -30,18 +30,22 @@ namespace TelegramBotService.Bot
 
             _inRoom = new List<CommandHandler>()
             {
-
+                new FreeRoomsCommand(),
+                new LeaveCommand(),
+                new IdleCommand()
             };
 
             _inGame = new List<CommandHandler>()
             {
+                 new LeaveCommand(),
                  new IdleCommand(),
                  new KillCommand()
             };
 
             _End = new List<CommandHandler>()
             {
-
+                new LeaveCommand(),
+                new IdleCommand()
             };
             _curentUsers = new Dictionary<User, CommandHandler>();
         }
@@ -79,7 +83,8 @@ namespace TelegramBotService.Bot
                         }
                     }
                 }
-                if (room.Status == MafiaStoryGame.Models.RoomStatus.End)
+                if(room.Game!=null)
+                if (room.Game.GameStatus == MafiaStoryGame.Models.GameStatus.End )
                 {
                     // закончилась
                     foreach (var cmd in _End)
