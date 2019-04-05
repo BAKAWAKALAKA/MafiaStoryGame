@@ -21,7 +21,7 @@ namespace TelegramBotService.Bot
             var maxUsers = 5;
             user.ChatId = message.chat.id; // todo так как нужно отправлять конкретно в комнату юзеру
             var parametrs = message.text.Split(' ');
-            if (parametrs.Any() && parametrs.Count()>2)
+            if (parametrs.Any() && parametrs.Count()>1)
             {
                 int.TryParse(parametrs[1],out maxUsers);
             }
