@@ -16,7 +16,6 @@ namespace TelegramAPI
     {
         private Timer IncomingTimer;
         private Timer OutcomingTimer;
-        public List<Timer> CustomTimer;
 
         private int MAX_OUTCOMING_MESEGES = 5;
         private int _me = 367265107;
@@ -43,7 +42,6 @@ namespace TelegramAPI
             IncomingTimer = new Timer((x) => this.GetUpdate());
             IncomingTimer.Change(0, 10000);
 
-            
 
             OutcomingTimer = new Timer((x) => this.SendMessages());
             OutcomingTimer.Change(500, 10000);
@@ -147,6 +145,24 @@ namespace TelegramAPI
                 lock (flag)
                 {
                     OutcomingMessages.AddRange(msgs);
+                }
+            }
+            catch (Exception e)
+            {
+                _log.Debug(e);
+            }
+        }
+
+        public void SendCustomMessages(IEnumerable<Messege> messeges)
+        {
+            // как то тупо выходит но щито поделать...это для того чтобы можно было слать из других классов меседжи по сути это будет подписываться у них 
+            try
+            {
+                _log.Info($"custom messeges adding {messeges.Count()}");
+
+                lock (flag)
+                {
+                    OutcomingMessages.AddRange(messeges);
                 }
             }
             catch (Exception e)

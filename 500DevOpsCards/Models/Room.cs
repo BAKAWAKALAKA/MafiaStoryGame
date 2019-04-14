@@ -15,7 +15,7 @@ namespace MafiaStoryGame.Models
         public GameSession Game { get;  set; }
         public RoomStatus Status { get;  set; }
         public int MaxUsers { get; set; } = 5;
-        public event Action<IEnumerable<Messege>> Subscrible;
+        public event Action<Dictionary<User,string>> Subscrible;
         private Logger _log = LogManager.GetCurrentClassLogger();
         
         public Room(User user, string name, int maxUsers, int counter)
@@ -48,7 +48,7 @@ namespace MafiaStoryGame.Models
             return false;
         }
 
-        public void Action(IEnumerable<Messege> raw)
+        public void Action(Dictionary<User, string> raw)
         {
             Subscrible?.Invoke(raw);
         }

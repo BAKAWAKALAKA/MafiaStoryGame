@@ -15,9 +15,11 @@ namespace MafiaStoryGame
     {
         public static int counter;
         public static List<Room> Rooms { get; private set; }
-        public static event Action<IEnumerable<Messege>> Subscrible;
+        public static event Action<Dictionary<int, string>> Subscrible;
         public static List<string> Names { get; set; }
         private static Random r = new Random();
+        public static List<string> WhiteCards { get; private set; }
+        public static List<string> BlackCards { get; private set; }
 
         static GameManager()
         {
@@ -29,12 +31,6 @@ namespace MafiaStoryGame
             json = File.ReadAllText(path + @"\Dialogs\names_male.json");
             Names.AddRange(JsonConvert.DeserializeObject<List<string>>(json));
 
-            //Rooms = new List<Room>();
-            //var testRoom = new Room(new User { Id = 1433345, ChatId = 14334, UserName = "bot" }, "test", 4, 1234);
-            //testRoom.Users.Add(new User { Id = 14933345, ChatId = 1439034, UserName = "bot" });
-            //testRoom.Users.Add(new User { Id = 143300345, ChatId = 1439734, UserName = "bot" });
-            //Rooms.Add(testRoom);
-            //Rooms.First().Subscrible += Action;
             counter = 1235;
         }
 
@@ -82,11 +78,11 @@ namespace MafiaStoryGame
             var room = new Room(user, name, maxUsers, counter++);
             room.Subscrible += Action;
             Rooms.Add(room);
-
+            
             return room.RoomId;
         }
 
-        public static void Action(IEnumerable<Messege> raw)
+        public static void Action(Dictionary<User, string> raw)
         {
             var res = raw.ToDictionary(key => key.Key.ChatId, val => val.Value);
             Subscrible?.Invoke(res);
@@ -127,6 +123,7 @@ namespace MafiaStoryGame
 
         public static string SeeAllRoomInfo()
         {
+            // todo добавить статус о том кто сделал
             var freeRooms = Rooms.ToList();
 
             if (!freeRooms.Any()) return "no one";
@@ -152,6 +149,7 @@ namespace MafiaStoryGame
 
         public static void KillMe(GameSession session)
         {
+            //todo придумать как убить комнату
             var room = Rooms.FirstOrDefault(q=>q.Game.Equals(session));
             var actors = room.Game.Actors;
             var res = new Dictionary<User, string>();
@@ -167,11 +165,5 @@ namespace MafiaStoryGame
 
     }
 
-    public class Messege
-    {
-        public int From;
-        public string Text;
-        public DateTime Time;
-        public int Image;
-    }
+
 }

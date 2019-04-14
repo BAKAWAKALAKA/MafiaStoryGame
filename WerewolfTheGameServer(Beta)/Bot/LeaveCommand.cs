@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TelegramAPI;
 using MafiaStoryGame;
 
-namespace TelegramBotService.Bot
+namespace WerewolfTheGameServer.Bot
 {
     public class LeaveCommand : CommandHandler
     {

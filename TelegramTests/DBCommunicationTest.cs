@@ -15,8 +15,19 @@ namespace TelegramTests
         {
             using (var ctx = new TBDBContext())
             {
-                var user = ctx.users.AsEnumerable();
-                var c = user.Count();
+                var top = new List<message>();
+                top.Add(new message() { chat_id = 1908, date = 12412, message_id = 1, text = "wf", user_id = 14 });
+                top.Add(new message() { chat_id = 108, date = 1412, message_id = 2, text = "fwf", user_id = 809 });
+                ctx.messages.AddRange(top);
+                var tt = ctx.SaveChanges();
+                ctx.messages.RemoveRange(top);
+                var ttt = ctx.SaveChanges();
+                var pp = new List<message>();
+                pp.Add(new message() { chat_id = 18, date = 12, message_id = 1, text = "o0wf", user_id = 1 });
+                ctx.messages.AddRange(pp);
+                ctx.SaveChanges();
+
+
             }
         }
     }

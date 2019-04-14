@@ -7,7 +7,7 @@ using TelegramAPI;
 using MafiaStoryGame;
 using MafiaStoryGame.Models;
 
-namespace TelegramBotService.Bot
+namespace WerewolfTheGameServer.Bot
 {
     public class IdleCommand : CommandHandler
     {

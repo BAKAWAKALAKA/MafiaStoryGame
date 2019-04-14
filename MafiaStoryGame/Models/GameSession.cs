@@ -33,7 +33,7 @@ namespace MafiaStoryGame.Models
       //  public GameType Type { get; } // тип (приватный или публичный) игры по ходу игры менять нельзя 
         public Timer _timer { get; set; } // пока что таймер с константным лимитом на все события
 
-        public event Action<Dictionary<User, string>> Subscrible;
+        public event Action <IEnumerable<Messege>> Subscrible;
         private Logger _log = LogManager.GetCurrentClassLogger();
 
         public GameSession(IEnumerable<User> users)
@@ -142,13 +142,13 @@ namespace MafiaStoryGame.Models
         }
 
         //нудно ли мне создавать методы здесь или обойтись екстеншен методами чтобы отвязать логику от данных....
-        public Dictionary<User, string> SetNextState()
+        public IEnumerable<Messege> SetNextState()
         {
             //todo избавиться от дисктионару! это так дерьмово что просто фу
             //todo неправильная логика передеачи состояния
             _log.Info($"Session setnext session start.curent state {GameState} users:{Actors.Count()}");
             var notification = new Dictionary<User, string>();
-            var special = new Dictionary<User, string>();
+            var specialReplices = new Dictionary<User, string>();
             if (this.GameState == GameState.End)
             {
                 //todo добаить оповещение для тех кто сам еще не вышел из игры что их автоматом выкинуло
@@ -270,8 +270,9 @@ namespace MafiaStoryGame.Models
                                         if (WerewolfsChoice.ContainsValue(killed))
                                         {
                                             str += "и спугнул оборотня";
+                                            luckers.Add(killed);
                                         }
-                                        special.Add(hunter.User, $"{Environment.NewLine}Посещенный вами {killed.Alias} оказался {killed.Role}");
+                                        specialReplices.Add(hunter.User, $"{Environment.NewLine}Посещенный вами {killed.Alias} оказался {killed.Role}");
                                     }
                                     HunterChoice.Clear();
                                     foreach (var choice in PriestsChoice)
@@ -282,6 +283,7 @@ namespace MafiaStoryGame.Models
                                         if (WerewolfsChoice.ContainsValue(killed) && !luckers.Contains(killed))
                                         {
                                             str += "и спугнул оборотня";
+                                            luckers.Add(killed);
                                         }
                                     }
                                     PriestsChoice.Clear();
@@ -304,31 +306,38 @@ namespace MafiaStoryGame.Models
                                     //}
 
                                     var kill = WerewolfsChoice.Where(q=>!luckers.Contains(q.Value))
-                                          .GroupBy(q => q.Value)
-                                          .Select(q => new { Key = q.Key, Val = q.Count() })
-                                          .OrderBy(q => q.Val)
-                                          .FirstOrDefault().Key;
-                                    kill.Status = ActorStatus.Dead;
-                                    str += $"В одном из переулков обноружен {kill.Alias}. Его труп был зверски истерзан.";
-                                    switch (kill.Role)
+                                          ?.GroupBy(q => q.Value)
+                                          ?.Select(q => new { Key = q.Key, Val = q.Count() })
+                                          ?.OrderBy(q => q.Val)
+                                          ?.FirstOrDefault().Key;
+                                    if (kill != null)
                                     {
-                                        case Roles.Hunter:
-                                            str += "в руке он сжимал значек охотника";
-                                            break;
-                                        case Roles.Priest:
-                                            str += "в руке он сжимал крест";
-                                            break;
-                                        case Roles.Werewolves:
-                                            str += "видимо оборотни занялись конибализмом. иначе как объяснить что его лицо слишком волчье...";
-                                            break;
+                                        kill.Status = ActorStatus.Dead;
+                                        str += $"В одном из переулков обноружен {kill.Alias}. Его труп был зверски истерзан.";
+                                        switch (kill.Role)
+                                        {
+                                            case Roles.Hunter:
+                                                str += "в руке он сжимал значек охотника";
+                                                break;
+                                            case Roles.Priest:
+                                                str += "в руке он сжимал крест";
+                                                break;
+                                            case Roles.Werewolves:
+                                                str += "видимо оборотни занялись конибализмом. иначе как объяснить что его лицо слишком волчье...";
+                                                break;
+                                        }
+                                        WerewolfsChoice.Clear();
                                     }
-                                    WerewolfsChoice.Clear();
+                                    else
+                                    {
+                                        str += $"Видимо волки не были голодны ночью.";
+                                    }
 
                                     foreach (var actor in Actors)
                                     {
-                                        if (special.ContainsKey(actor.User))
+                                        if (specialReplices.ContainsKey(actor.User))
                                         {
-                                            notification.Add(actor.User, str+special[actor.User]);
+                                            notification.Add(actor.User, str + specialReplices[actor.User]);
                                         }
                                         else
                                         {
@@ -344,13 +353,14 @@ namespace MafiaStoryGame.Models
             foreach (var not in notification)
                 _log.Info($"notify {not.Key.Id} text: {not.Value}");
 
-            var result = new Dictionary<User, string>();
+            var result = new List<Messege>();
             foreach (var nn in notification)
             {
                 var atr = Actors.First(q=>q.User.Id==nn.Key.Id);
                 if(atr.Status!= ActorStatus.Leave)
                 {
-                    result.Add(nn.Key,nn.Value);
+                    var msg = new Messege() { From = nn.Key.Id, Text = nn.Value };
+                    result.Add(msg);
                 }
             }
             return result;
