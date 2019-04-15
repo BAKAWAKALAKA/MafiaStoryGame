@@ -19,8 +19,8 @@ namespace TelegramAPI
     /// </summary>
     public class Telegram
     {
-        private string proxy = "217.182.92.162";
-        private int port = 3128;
+        private string proxy = "168.253.193.190";
+        private int port = 51699;
         private string _botToken;
         private string requestTemplate = @"https://api.telegram.org/bot{0}/{1}";
         private List<int> ReceivedUpdIsd = new List<int>();
@@ -28,6 +28,7 @@ namespace TelegramAPI
         private Logger _log = LogManager.GetCurrentClassLogger();
         private ProxyServerGrabberFromFile _proxy;
 
+        //todo убрать из стандартного конструктора парсер прокси
         public Telegram()
         {
             try{
@@ -52,6 +53,42 @@ namespace TelegramAPI
                 throw new UnauthorizedAccessException();
             }  
         }
+
+        public Telegram(string botTokenPath, string proxyListPatch = null)
+        {
+            try
+            {
+                _botToken = File.ReadAllText(botTokenPath);
+                if (proxyListPatch!=null)
+                {
+                    var str = File.ReadAllText(proxyListPatch);
+                    if (!int.TryParse(str, out _lastUpdate))
+                    {
+                        var time = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                        var current = DateTime.Now.Subtract(new TimeSpan(3, 0, 0)); // ибо рашка
+                        var diff = current - time;
+                        _lastUpdate = (int)diff.TotalSeconds;
+                    }
+
+                    _proxy = new ProxyServerGrabberFromFile();
+                    var ps = SetProxy();
+                    var wtf = CheckConnection();
+
+                    _log.Info($"start since: {_lastUpdate} status: {wtf} proxy {proxy}:{port} success: {ps}");
+                }
+                else
+                {
+                    var wtf = CheckConnection();
+                    _log.Info($"start since: {_lastUpdate} status: {wtf} proxy {proxy}:{port}");
+                }
+            }
+            catch (Exception e)
+            {
+                _log.Info(e);
+                throw new UnauthorizedAccessException();
+            }
+        }
+
 
         public bool CheckConnection()
         {
@@ -108,21 +145,35 @@ namespace TelegramAPI
                     var msg = new Messege();
                     var jProperties = update.Properties();
                     //todo создать приватную функцию использующую отражение вместо этого дерьма
-                    var upd_id = jProperties.First().Value.Value<int>();
+                    var upd_id = jProperties.First(q=>q.Name == "update_id").Value.Value<int>();
                     if (!ReceivedUpdIsd.Contains(upd_id))
                     {
-                        var msg_content = jProperties.Last().Value.Value<JObject>();
-                        foreach (var prop in msg_content.Properties())
+                        var msg_content = jProperties.FirstOrDefault(q=>q.Name == "message")?.Value?.Value<JObject>();
+                        if (msg_content != null)
                         {
-                            if (prop.Name == "message_id") msg.message_id = prop.Value.Value<int>();
-                            if (prop.Name == "date") msg.date = prop.Value.Value<int>();
-                            if (prop.Name == "forward_date") msg.forward_date = prop.Value.Value<int>();
-                            if (prop.Name == "text") msg.text = prop.Value.Value<string>();
-                            if (prop.Name == "from") msg.from = JsonConvert.DeserializeObject<User>(prop.Value.ToString());
-                            if (prop.Name == "chat") msg.chat = JsonConvert.DeserializeObject<Chat>(prop.Value.ToString());
+                            foreach (var prop in msg_content.Properties())
+                            {
+                                if (prop.Name == "message_id") msg.message_id = prop.Value.Value<int>();
+                                if (prop.Name == "date") msg.date = prop.Value.Value<int>();
+                                if (prop.Name == "forward_date") msg.forward_date = prop.Value.Value<int>();
+                                if (prop.Name == "text") msg.text = prop.Value.Value<string>();
+                                if (prop.Name == "from") msg.from = JsonConvert.DeserializeObject<User>(prop.Value.ToString());
+                                if (prop.Name == "chat") msg.chat = JsonConvert.DeserializeObject<Chat>(prop.Value.ToString());
+                            }
                         }
-
-                        if (msg.date > _lastUpdate)
+                        var msg_callback_query = jProperties.FirstOrDefault(q => q.Name == "callback_query")?.Value?.Value<JObject>();
+                        if (msg_callback_query != null)
+                        {
+                            foreach (var prop in msg_callback_query.Properties())
+                            {
+                                if (prop.Name == "id") msg.message_id = -1;
+                                if (prop.Name == "forward_date") msg.forward_date = prop.Value.Value<int>();
+                                if (prop.Name == "data") msg.text = prop.Value.Value<string>();
+                                if (prop.Name == "from") msg.from = JsonConvert.DeserializeObject<User>(prop.Value.ToString());
+                                if (prop.Name == "chat") msg.chat = JsonConvert.DeserializeObject<Chat>(prop.Value.ToString());
+                            }
+                        }
+                        if (msg.date > _lastUpdate && msg.message_id!=-1)// т к пока не знаю что делать с кнопками пусть они не записываются
                         {
                             _log.Trace($"new message from {msg.from.id} to chat:{msg.chat.id} text:{msg.text}");
                             result.Add(msg);
@@ -232,6 +283,12 @@ namespace TelegramAPI
         }
 
 
+        public bool AnswerCallbackQuery(string callback_query_id, string text =null,string show_alert=null)
+        {
+
+            return false;
+        }
+
         private void MapTo<T>(string json, ref T output)
         {
             // вообще хотелось бы метод который парсил с джейсона в определенный класс
@@ -263,9 +320,9 @@ namespace TelegramAPI
             var client = new RestClient(_base);
             client.Proxy = new System.Net.WebProxy(proxy, port);
 
-            var request = new RestRequest(Method.GET);
+            var request = new RestRequest(Method.POST);
             request.RequestFormat = DataFormat.Json;
-            request.AddBody(sendingMessage);
+          //  request.AddBody(sendingMessage);
 
             var responce = client.Execute(request);
             if (responce.IsSuccessful)

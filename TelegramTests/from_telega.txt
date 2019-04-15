@@ -297,3 +297,123 @@ dateTime = dateTime.AddSeconds(timestamp);
     ]
   }
 }}
+
+//ответ от кнопки в сообщении
+
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 555290600,
+      "callback_query": {
+        "id": "1577391625041537690",
+        "from": {
+          "id": 367265107,
+          "is_bot": false,
+          "first_name": "Kate",
+          "last_name": "Il",
+          "language_code": "ru"
+        },
+        "message": {
+          "message_id": 878,
+          "from": {
+            "id": 641929894,
+            "is_bot": true,
+            "first_name": "Werewolf the game",
+            "username": "WerewolfTheGameBot"
+          },
+          "chat": {
+            "id": 367265107,
+            "first_name": "Kate",
+            "last_name": "Il",
+            "type": "private"
+          },
+          "date": 1555261827,
+          "text": "veb"
+        },
+        "chat_instance": "-2270538722155919868",
+        "data": "oh you clicked me)"
+      }
+    }
+  ]
+}
+
+// ответ от нажатия кнопки с клавиатуры и указанием при создании жтой кнопки что она должна контак человека передать
+
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 555290601,
+      "message": {
+        "message_id": 880,
+        "from": {
+          "id": 367265107,
+          "is_bot": false,
+          "first_name": "Kate",
+          "last_name": "Il",
+          "language_code": "ru"
+        },
+        "chat": {
+          "id": 367265107,
+          "first_name": "Kate",
+          "last_name": "Il",
+          "type": "private"
+        },
+        "date": 1555267801,
+        "reply_to_message": {
+          "message_id": 879,
+          "from": {
+            "id": 641929894,
+            "is_bot": true,
+            "first_name": "Werewolf the game",
+            "username": "WerewolfTheGameBot"
+          },
+          "chat": {
+            "id": 367265107,
+            "first_name": "Kate",
+            "last_name": "Il",
+            "type": "private"
+          },
+          "date": 1555267786,
+          "text": "veb"
+        },
+        "contact": {
+          "phone_number": "+79119004094",
+          "first_name": "Kate",
+          "last_name": "Il",
+          "user_id": 367265107
+        }
+      }
+    }
+  ]
+}
+
+// ответ от запроса с кнопкой
+
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 555290603,
+      "message": {
+        "message_id": 884,
+        "from": {
+          "id": 367265107,
+          "is_bot": false,
+          "first_name": "Kate",
+          "last_name": "Il",
+          "language_code": "ru"
+        },
+        "chat": {
+          "id": 367265107,
+          "first_name": "Kate",
+          "last_name": "Il",
+          "type": "private"
+        },
+        "date": 1555268159,
+        "text": "click me!"
+      }
+    }
+  ]
+}

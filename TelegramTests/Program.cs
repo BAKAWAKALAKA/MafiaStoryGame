@@ -14,7 +14,7 @@ namespace TelegramTests
             {
                 try
                 {
-                    DBCommunicationTest.Do();
+                    TelegramApiInlineButtonTest.Do();
                 }
                 catch(Exception e)
                 {

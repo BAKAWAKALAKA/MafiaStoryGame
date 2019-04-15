@@ -50,7 +50,7 @@ namespace WerewolfTheGameServer.Bot
             _curentUsers = new Dictionary<User, CommandHandler>();
         }
 
-        public bool CanRespond(Messege message)
+        public bool CanRespond(TelegramAPI.Messege message)
         {
             ///здесь как обычно проверяем если в списке команд(всех возможных) введеных
             ///хотя с другой стороны блин а если человек просто пишет в чат что то
@@ -110,7 +110,7 @@ namespace WerewolfTheGameServer.Bot
             return _curentUsers.Any();
         }
 
-        public IEnumerable<Messege> SendResponce(Messege message)
+        public IEnumerable<TelegramAPI.Messege> SendResponce(TelegramAPI.Messege message)
         {
             // выдавливаем эту сранную команду которую может позволить себе этот сраный юзер
             // хотя может хранить словарь юзера и команды которую задавать будем в CanRespond а вызывать и убирать тут

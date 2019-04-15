@@ -88,8 +88,7 @@ namespace MafiaStoryGame
 
         public static void Action(IEnumerable<Messege> raw)
         {
-            var res = raw.ToDictionary(key => key.Key.ChatId, val => val.Value);
-            Subscrible?.Invoke(res);
+            Subscrible?.Invoke(raw);
         }
 
         public static bool JoinRoom(int roomId, User user)
@@ -111,7 +110,6 @@ namespace MafiaStoryGame
 
         public static string SeeFreeRoomsInfo()
         {
-            // todo переделать т к наверно лучше предовать структуру чем стрингу
             var freeRooms = Rooms.Where(q => q.Status == RoomStatus.Wait).ToList();
 
             if (!freeRooms.Any()) return "**no one**";
@@ -154,11 +152,11 @@ namespace MafiaStoryGame
         {
             var room = Rooms.FirstOrDefault(q=>q.Game.Equals(session));
             var actors = room.Game.Actors;
-            var res = new Dictionary<User, string>();
+            var res = new List<Messege>();
             foreach (var actor in actors)
             {
                 if(actor.User!=null)
-                res.Add(actor.User, $"комната {room.RoomId} удалена!");
+                res.Add(new Messege() { From = actor.User.Id, Text = $"комната {room.RoomId} удалена!" });
             }
             Action(res);
             room.KillYourself();
@@ -171,7 +169,21 @@ namespace MafiaStoryGame
     {
         public int From;
         public string Text;
-        public DateTime Time;
+        public DateTime? Time;
         public int Image;
+        public IEnumerable<Command> Commands;
+    }
+
+    public class Command
+    {
+        public CommandType CommandType;
+        public string ReturnText;
+        public string Text;
+    }
+
+    public enum CommandType
+    {
+        InText,
+        InConsole
     }
 }

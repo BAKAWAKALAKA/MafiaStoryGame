@@ -57,7 +57,11 @@ namespace WerewolfTheGameServer
         public static TelegramAPI.Messege MapToTelegram(this MafiaStoryGame.Messege messege)
         {
             var msg = new TelegramAPI.Messege();
-            //преобразования!!!
+
+            msg.chat = new Chat() { id = messege.From };
+            msg.text = messege.Text;
+
+
             return msg;
         }
 

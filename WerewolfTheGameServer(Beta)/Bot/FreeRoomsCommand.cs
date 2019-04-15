@@ -10,18 +10,18 @@ namespace WerewolfTheGameServer.Bot
 {
     public class FreeRoomsCommand : CommandHandler
     {
-        public bool CanRespond(Messege message)
+        public bool CanRespond(TelegramAPI.Messege message)
         {
             return message.text.ToLower().StartsWith("/free");
         }
 
-        public IEnumerable<Messege> SendResponce(Messege message)
+        public IEnumerable<TelegramAPI.Messege> SendResponce(TelegramAPI.Messege message)
         {
-            var msg = new Messege() { chat = message.chat };
+            var msg = new TelegramAPI.Messege() { chat = message.chat };
 
             msg.text = GameManager.SeeFreeRoomsInfo();
 
-            return new Messege[] { msg };
+            return new TelegramAPI.Messege[] { msg };
         }
     }
 }
