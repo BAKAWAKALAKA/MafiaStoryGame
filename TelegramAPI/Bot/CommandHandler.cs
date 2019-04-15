@@ -9,6 +9,6 @@ namespace TelegramAPI
     public interface CommandHandler
     {
         bool CanRespond(Messege message);
-       IEnumerable<Messege> SendResponce(Messege message);
+       IEnumerable<SendingMessage> SendResponce(Messege message);
     }
 }

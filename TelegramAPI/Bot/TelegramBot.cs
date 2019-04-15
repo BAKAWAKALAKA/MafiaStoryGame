@@ -20,10 +20,10 @@ namespace TelegramAPI
         private int MAX_OUTCOMING_MESEGES = 5;
         private int _me = 367265107;
         //  private event Action InComingEvent;
-      //  public event Action<Dictionary<int, string>> OutComingEvent;
+        //  public event Action<Dictionary<int, string>> OutComingEvent;
 
         private List<CommandHandler> Commands;
-        private List<Messege> OutcomingMessages; // вообще лучше наверно иметь какую нибуть другую структуру данных чтобы можно было сортировать по юзеру и игре
+        private List<SendingMessage> OutcomingMessages; // вообще лучше наверно иметь какую нибуть другую структуру данных чтобы можно было сортировать по юзеру и игре
         private object flag; // я пока плохо в многопоточности поэтому пусть будет так 
 
         private Telegram _tlgm;
@@ -36,7 +36,7 @@ namespace TelegramAPI
             flag = new object();
             _tlgm = new Telegram();
 
-            OutcomingMessages = new List<Messege>();
+            OutcomingMessages = new List<SendingMessage>();
 
             // можно было бы вместо этого использовать один метод Update гдебыли бы GetUpdate SendMessages
             IncomingTimer = new Timer((x) => this.GetUpdate());
@@ -89,32 +89,22 @@ namespace TelegramAPI
                 _log.Trace("sending start");
                 lock (flag)
                 {
-                    IEnumerable<Messege> executemsgs = null;
+                    IEnumerable<SendingMessage> executemsgs = null;
 
                     executemsgs = OutcomingMessages.Take(MAX_OUTCOMING_MESEGES);
 
-                    var executedMsgs = new List<Messege>();
+                    var executedMsgs = new List<SendingMessage>();
                     foreach (var msg in executemsgs)
                     {
                         //отправить в телегу если не отправилось то плевать мы все равно не всемогущи
-                        _log.Trace($"sending to:{msg.chat.id} text: {msg.text}");
-                        
-                        if (msg.chat.id == _me)
+                        _log.Trace($"sending to:{msg.chat_id} text: {msg.text}");
+
+                        if (_tlgm.SendMessage(msg))
                         {
-                            if (_tlgm.SendMessage(msg.chat.id, msg.text))
-                            {
-                                executedMsgs.Add(msg);
-                            }
+                            executedMsgs.Add(msg);
                         }
-                        else
-                        {
-                            if (_tlgm.SendMessage(msg.chat.id, msg.text))
-                            {
-                                executedMsgs.Add(msg);
-                            }
-                            _tlgm.SendMessage(_me, $"from:{msg.chat.id} send {msg.text}");
-                        }
-                    } 
+
+                    }
                     OutcomingMessages = OutcomingMessages.Except(executedMsgs).ToList(); // очищаем то что уже отправили
                     if (executedMsgs.Count() < executemsgs.Count())
                     {
@@ -130,39 +120,14 @@ namespace TelegramAPI
             }
         }
 
-        public void SendCustomMessages(Dictionary<int, string> userMessages)
+        public void SendCustomMessages(IEnumerable<SendingMessage> userMessages)
         {
             // как то тупо выходит но щито поделать...это для того чтобы можно было слать из других классов меседжи по сути это будет подписываться у них 
             try
             {
-                var msgs = new List<Messege>();
-                _log.Info($"custom messeges adding {userMessages.Count}");
-                foreach (var msg in userMessages)
-                {
-                    msgs.Add(new Messege() { chat = new Chat() { id = msg.Key }, text = msg.Value });
-                }
-
                 lock (flag)
                 {
-                    OutcomingMessages.AddRange(msgs);
-                }
-            }
-            catch (Exception e)
-            {
-                _log.Debug(e);
-            }
-        }
-
-        public void SendCustomMessages(IEnumerable<Messege> messeges)
-        {
-            // как то тупо выходит но щито поделать...это для того чтобы можно было слать из других классов меседжи по сути это будет подписываться у них 
-            try
-            {
-                _log.Info($"custom messeges adding {messeges.Count()}");
-
-                lock (flag)
-                {
-                    OutcomingMessages.AddRange(messeges);
+                    OutcomingMessages.AddRange(userMessages);
                 }
             }
             catch (Exception e)

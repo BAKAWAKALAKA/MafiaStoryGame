@@ -253,7 +253,7 @@ namespace TelegramAPI
             return result.ok;
         }
 
-        public bool SendMessage(int chat, SendingMessage message)
+        public bool SendMessage(SendingMessage message)
         {
             // todo пока так но надо переделать на пост ибо какая то херня все в url прописывать
             var cmd = $"sendMessage";
